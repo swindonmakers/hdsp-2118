@@ -64,7 +64,7 @@ void setup() {
 
 int offset = 0;
 void loop() {
-  const char *fullstring = "This is a test of scrolling...";
+  const char *fullstring = "@theorbtwo, @castaway and @snhack!";
   char outstring[8];
   int len = strlen(fullstring);
   for (int i=0; i<8; i++) {
@@ -73,7 +73,7 @@ void loop() {
   string_to_display(outstring);
   
   // in ms
-  delay(125);
+  delay(200);
   offset++;
 }
   
