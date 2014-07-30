@@ -19,6 +19,21 @@ int LedState = LOW;
 
 void flipLed();
 
+void write_to_display(char addr, char data) {
+  digitalWrite(A0Pin, (addr>>0)&1);
+  digitalWrite(A1Pin, (addr>>1)&1);
+  digitalWrite(A2Pin, (addr>>2)&1);
+  // A3, A4, and FL are currently hard-wired; all writes will go to the character ram.
+  
+  digitalWrite(CEPin, LOW);
+  digitalWrite(WRPin, LOW);
+  
+  for (char i=0; i<8; i++)
+   digitalWrite(DPin[i], (data>>i)&1);
+  digitalWrite(WRPin, HIGH);
+  digitalWrite(CEPin, HIGH);  
+}
+
 void setup() {
     // Configure output pins:
   pinMode(CEPin, OUTPUT);
@@ -29,42 +44,14 @@ void setup() {
    for(int i = 0; i < 8; i++) { pinMode(DPin[i], OUTPUT);}
   pinMode(LedPin, OUTPUT);
 
-//  flipLed();
-  digitalWrite(A0Pin, LOW);
-  digitalWrite(A1Pin, LOW);
-  digitalWrite(A2Pin, LOW);
-//  flipLed();
-    // ChipEnable Pin LOW
-  digitalWrite(CEPin, LOW);
-//  delayMicroseconds(1);
-    // Write Pin LOW
-  digitalWrite(WRPin, LOW);
-//  flipLed();
-  
-  digitalWrite(DPin[0], HIGH);
-  digitalWrite(DPin[1], HIGH);
-  digitalWrite(DPin[2], LOW);
-  digitalWrite(DPin[3], LOW);
-  digitalWrite(DPin[4], HIGH);
-  digitalWrite(DPin[5], LOW);
-  digitalWrite(DPin[6], HIGH);
-  digitalWrite(DPin[7], LOW);
-    /*
-  for(int i=0; i<8; i++) {
-     if(i==TestDPin) {
-        digitalWrite(DPin[i], HIGH);
-     } else {
-        digitalWrite(DPin[i], LOW);
-     }
-  }
-    */
-  
-//  flipLed();
-  // Done writing
-  digitalWrite(WRPin, HIGH);
-//  delayMicroseconds(1);
-  digitalWrite(CEPin, HIGH);  
-      
+  write_to_display(0, '@');
+  write_to_display(1, 's');
+  write_to_display(2, 'n');
+  write_to_display(3, 'h');
+  write_to_display(4, 'a');
+  write_to_display(5, 'c');
+  write_to_display(6, 'k');
+  write_to_display(7, '!');
 }
 
 void loop()
