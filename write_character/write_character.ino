@@ -20,9 +20,9 @@ int LedState = LOW;
 void flipLed();
 
 // We ignore the rest if more then 8 characters.
-void string_to_display(char *str) {
+void string_to_display(const char *str) {
   char past_term=0;
-  for (char i=0; i<8; i++) {
+  for (int i=0; i<8; i++) {
     if (!past_term && str[i] == 0) {
       past_term = 1;
     }
@@ -34,7 +34,7 @@ void string_to_display(char *str) {
   }
 }
 
-void write_to_display(char addr, char data) {
+void write_to_display(const char addr, const char data) {
   digitalWrite(A0Pin, (addr>>0)&1);
   digitalWrite(A1Pin, (addr>>1)&1);
   digitalWrite(A2Pin, (addr>>2)&1);
@@ -43,7 +43,7 @@ void write_to_display(char addr, char data) {
   digitalWrite(CEPin, LOW);
   digitalWrite(WRPin, LOW);
   
-  for (char i=0; i<8; i++)
+  for (int i=0; i<8; i++)
    digitalWrite(DPin[i], (data>>i)&1);
   digitalWrite(WRPin, HIGH);
   digitalWrite(CEPin, HIGH);  
@@ -62,10 +62,21 @@ void setup() {
   string_to_display("JMM");
 }
 
-void loop()
-{
+int offset = 0;
+void loop() {
+  const char *fullstring = "This is a test of scrolling...";
+  char outstring[8];
+  int len = strlen(fullstring);
+  for (int i=0; i<8; i++) {
+    outstring[i] = fullstring[(offset+i)%len];
+  }
+  string_to_display(outstring);
+  
+  // in ms
+  delay(125);
+  offset++;
 }
-
+  
 void flipLed() {
     if(LedState == LOW) {
         LedState = HIGH;
