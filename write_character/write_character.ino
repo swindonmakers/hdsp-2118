@@ -19,6 +19,21 @@ int LedState = LOW;
 
 void flipLed();
 
+// We ignore the rest if more then 8 characters.
+void string_to_display(char *str) {
+  char past_term=0;
+  for (char i=0; i<8; i++) {
+    if (!past_term && str[i] == 0) {
+      past_term = 1;
+    }
+    if (past_term) {
+      write_to_display(i, ' ');
+    } else {
+      write_to_display(i, str[i]);
+    }
+  }
+}
+
 void write_to_display(char addr, char data) {
   digitalWrite(A0Pin, (addr>>0)&1);
   digitalWrite(A1Pin, (addr>>1)&1);
@@ -44,14 +59,7 @@ void setup() {
    for(int i = 0; i < 8; i++) { pinMode(DPin[i], OUTPUT);}
   pinMode(LedPin, OUTPUT);
 
-  write_to_display(0, '@');
-  write_to_display(1, 's');
-  write_to_display(2, 'n');
-  write_to_display(3, 'h');
-  write_to_display(4, 'a');
-  write_to_display(5, 'c');
-  write_to_display(6, 'k');
-  write_to_display(7, '!');
+  string_to_display("JMM");
 }
 
 void loop()
