@@ -62,19 +62,27 @@ void setup() {
   string_to_display("JMM");
 }
 
-int offset = 0;
-void loop() {
-  const char *fullstring = "@theorbtwo, @castaway and @snhack!";
-  char outstring[8];
-  int len = strlen(fullstring);
-  for (int i=0; i<8; i++) {
-    outstring[i] = fullstring[(offset+i)%len];
+char to_hex(int val) {
+  if (val < 0xA) {
+    return '0' + val;
+  } else {
+    return 'a' + (val - 0xa);
   }
+}
+
+char c = 0;
+void loop() {
+  char *outstring = "0x..: .";
+  outstring[2] = to_hex((c >> 4) & 0xF);
+  outstring[3] = to_hex((c >> 0) & 0xF);
+  
+  outstring[6] = c;
+  
   string_to_display(outstring);
   
   // in ms
-  delay(200);
-  offset++;
+  delay(500);
+  c++;
 }
   
 void flipLed() {
